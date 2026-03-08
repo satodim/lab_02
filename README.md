@@ -281,3 +281,82 @@ Date:   Thu Mar 6 12:15:22 2026 +0300
 
     Initial commit
 ```
+# Homework
+
+## I Часть
+
+### Создайте пустой репозиторий на сервисе github.com
+
+Создал репозиторий lab_02
+
+### Выполните инструкцию по созданию первого коммита на странице репозитория, созданного на предыдущем шаге.
+
+```sh
+git init
+git branch -m main
+git remote add origin https://github.com/satodim/lab_02
+git pull origin master
+```
+
+Вывод:
+
+```
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (3/3), 1.45 KiB | 745.00 KiB/s, done.
+From https://github.com/Mimocake/TIMP-lab02
+ * branch            main       -> FETCH_HEAD
+ * [new branch]      main       -> origin/main
+```
+
+### Создайте файл `hello_world.cpp` в локальной копии репозитория (который должен был появиться на шаге 2). Реализуйте программу Hello world на языке C++ используя плохой стиль кода. Например, после заголовочных файлов вставьте строку `using namespace std;`.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+	cout << "Hello world!" << name << endl;
+	return 0;
+}
+```
+### Добавьте этот файл в локальную копию репозитория.
+
+```sh
+git add hello_world.cpp
+```
+### Закоммитьте изменения с осмысленным сообщением.
+
+```sh
+git commit -m "added hello_world.cpp"
+```
+Вывод:
+
+```
+[main 19baeaf] added hello_world.cpp
+ 1 file changed, 7 insertions(+)
+ create mode 100644 hello_world.cpp
+```
+### Изменитьте исходный код так, чтобы программа через стандартный поток ввода запрашивалось имя пользователя. А в стандартный поток вывода печаталось сообщение Hello world from @name, где @name имя пользователя.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+	string name;
+	cin >> name;
+	cout << "Hello world from " << name << endl;
+	return 0;
+}
+```
+### Закоммитьте новую версию программы. Почему не надо добавлять файл повторно `git add`?
+
+```sh
+git commit -a -m "modified hello_world.cpp"
+```
+-a означает коммит всех измененных файлов, чтобы этот файл смог закоммититься.
+ 
+ ### 
