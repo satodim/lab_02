@@ -112,3 +112,172 @@ Untracked files:
 
 nothing added to commit but untracked files present (use "git add" to track)
 ```
+### Созданный README пока что никак не участвует в репозитории, поэтому мы можем его добавить и сделать новый коммит:
+```sh
+git add README.md
+git commit -m "added README.md"
+```
+
+```
+[main 19701b1] added README.md
+ 1 file changed, 1 insertion(+)
+ create mode 100644 README.md
+```
+
+### Пушим локальный коммит на удаленный репозиторий
+```sh
+git push origin main
+```
+
+```
+Username for 'https://github.com': satodim
+Password for 'https://satodim@github.com': 
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 307 bytes | 307.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://github.com/Mimocake/lab02t.git
+   2b5f135..19701b1  main -> main
+```
+### Теперь удаленно создадим `.gitignore` и загрузим к нам.
+```sh
+git remote pull origin
+```
+
+```
+remote: Enumerating objects: 4, done.
+remote: Counting objects: 100% (4/4), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (3/3), 993 bytes | 496.00 KiB/s, done.
+From https://github.com/satodim/lab02
+ * branch            main       -> FETCH_HEAD
+   19701b1..4fc5ac2  main       -> origin/main
+Updating 19701b1..4fc5ac2
+Fast-forward
+ .gitignore | 4 ++++
+ 1 file changed, 4 insertions(+)
+ create mode 100644 .gitignore
+```
+
+### На всякий случай убедимся, что все действительно загрузилось:
+```sh
+ls -a
+```
+
+```
+.  ..  .git  .gitignore  LICENSE  README.md
+```
+### Посмотрим на историю репозитория 
+```sh
+git log
+```
+
+```
+commit 4fc5ac20c9dc9ecc8fb5493645726145eed30953 (HEAD -> main, origin/main)
+Author: satodim <88584860+satodim@users.noreply.github.com>
+Date:   Thu Mar 6 12:56:58 2026 +0300
+
+    Create .gitignore
+
+commit 19701b13454bd7a64edbd07011e16323424d3f8f
+Author: satodim <vovkakursk8@gmail.com>
+Date:   Thu Mar 6 12:37:38 2026 +0300
+
+    added README.md
+
+commit 2b5f1353c2c0a8d60a8d693bb0a9bebecfc874c3
+Author: saatodim <88584860+satodim@users.noreply.github.com>
+Date:   Thu Mar 6 12:15:22 2026 +0300
+
+    Initial commit
+```
+Видно, что первый коммит был сделан мною на гитхабе, второй тоже мною в консоли, и третий опять на гитхабе
+
+### Ну и теперь создадим несколько `cpp` файлов
+
+```sh
+mkdir sources
+mkdir include
+mkdir examples
+
+cat > sources/print.cpp <<EOF
+#include <print.hpp>
+
+void print(const std::string& text, std::ostream& out)
+{
+  out << text;
+}
+
+void print(const std::string& text, std::ofstream& out)
+{
+  out << text;
+}
+EOF
+
+cat > include/print.hpp <<EOF
+#include <fstream>
+#include <iostream>
+#include <string>
+
+void print(const std::string& text, std::ofstream& out);
+void print(const std::string& text, std::ostream& out = std::cout);
+EOF
+
+cat > examples/example1.cpp <<EOF
+#include <print.hpp>
+
+int main(int argc, char** argv)
+{
+  print("hello");
+}
+EOF
+
+cat > examples/example2.cpp <<EOF
+#include <print.hpp>
+
+#include <fstream>
+
+int main(int argc, char** argv)
+{
+  std::ofstream file("log.txt");
+  print(std::string("hello"), file);
+}
+EOF
+```
+
+### Коммитим и пушим их:
+```sh
+git add .
+git commit -m"added sources"
+git push origin master
+```
+
+### Введем `git log` для проверки
+
+```
+Author: satodim <vovkakursk8@gmail.com>
+Date:   Thu Mar 6 13:20:32 2026 +0300
+
+    added sources
+
+commit 4fc5ac20c9dc9ecc8fb5493645726145eed30953
+Author: satodim <88584860+satodim@users.noreply.github.com>
+Date:   Thu Mar 6 12:56:58 2026 +0300
+
+    Create .gitignore
+
+commit 19701b13454bd7a64edbd07011e16323424d3f8f
+Author: satodim <vovkakursk8@gmail.com>
+Date:   Thu Mar 6 12:37:38 2026 +0300
+
+    added README.md
+
+commit 2b5f1353c2c0a8d60a8d693bb0a9bebecfc874c3
+Author: satodim <88584860+satodim@users.noreply.github.com>
+Date:   Thu Mar 6 12:15:22 2026 +0300
+
+    Initial commit
+```
