@@ -320,6 +320,7 @@ using namespace std;
 int main() {
 	cout << "Hello world!" << name << endl;
 	return 0;
+
 }
 ```
 ### Добавьте этот файл в локальную копию репозитория.
@@ -335,9 +336,9 @@ git commit -m "added hello_world.cpp"
 Вывод:
 
 ```
-[main 19baeaf] added hello_world.cpp
- 1 file changed, 7 insertions(+)
- create mode 100644 hello_world.cpp
+[main eb30434] added hello_world.cpp
+ 1 file changed, 8 insertions(+)
+ create mode 100644 Downloads/hello_world.cpp
 ```
 ### Изменитьте исходный код так, чтобы программа через стандартный поток ввода запрашивалось имя пользователя. А в стандартный поток вывода печаталось сообщение Hello world from @name, где @name имя пользователя.
 
