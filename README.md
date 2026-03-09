@@ -272,5 +272,133 @@ git commit -m"added sources"
 git push origin master
 ```
 # Homework
+
 ## Part I
+
+### Создайте пустой репозиторий на сервисе github.com
+
+Создали **этот** репозиторий
+
+### Выполните инструкцию по созданию первого коммита на странице репозитория, созданного на предыдущем шаге.
+
+```sh
+git init
+git branch -m main
+git remote add origin https://github.com/satodim/lab_02
+git pull origin main
+```
+
+Вывод последней команды:
+
+```
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (3/3), 1.45 KiB | 745.00 KiB/s, done.
+From https://github.com/satodim/lab_02
+ * branch            main       -> FETCH_HEAD
+ * [new branch]      main       -> origin/main
+```
+
+### Создайте файл `hello_world.cpp` в локальной копии репозитория (который должен был появиться на шаге 2). Реализуйте программу Hello world на языке C++ используя плохой стиль кода. Например, после заголовочных файлов вставьте строку `using namespace std;`.
+
+Этот файл:
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+	cout << "Hello world!" << name << endl;
+	return 0;
+}
+```
+
+### Добавьте этот файл в локальную копию репозитория.
+```sh
+git add hello_world.cpp
+```
+
+### Закоммитьте изменения с осмысленным сообщением.
+```sh
+git commit -m "hello_world.cpp"
+```
+
+```
+[main 19baeaf] added hello_world.cpp
+ 1 file changed, 7 insertions(+)
+ create mode 100644 hello_world.cpp
+```
+### Изменитьте исходный код так, чтобы программа через стандартный поток ввода запрашивалось имя пользователя. А в стандартный поток вывода печаталось сообщение Hello world from @name, где @name имя пользователя.
+
+Новая версия программы
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+	string name;
+	cin >> name;
+	cout << "Hello world from " << name << endl;
+	return 0;
+}
+```
+
+### Закоммитьте новую версию программы. Почему не надо добавлять файл повторно `git add`?
+
+```sh
+git commit -a -m "added hello_world.cpp"
+```
+
+`-a` означает коммит всех измененных файлов, чтобы этот файл смог закоммититься.
+
+### Шаг 8
+*Запуште изменения в удалёный репозиторий.*
+
+```sh
+git push origin main
+```
+
+```
+Username for 'https://github.com': satodim
+Password for 'https://satodim@github.com': 
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 408 bytes | 408.00 KiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/satodim/lab_02.git
+   ea81e44..b15398a  main -> main
+```
+
+### Шаг 9
+*Проверьте, что история коммитов доступна в удалённом репозитории.*
+
+```sh
+git log
+```
+
+```
+commit 076186a0e27ecb60e1bcebc2bb46c88470f7d187 (HEAD -> main, origin/main)
+Author: satodim <vovkakursk8@gmail.com>
+Date:   Fri Mar 6 17:05:21 2026 +0300
+
+     hello_world.cpp
+
+commit b15398ae3b062c765a7264ad83a203a3e54179bc (HEAD -> main, origin/main)
+Author: satodim <vovkakursk8@gmail.com>
+Date:   Mon Mar 9 13:15:31 2026 +0000
+
+    added hello_world.cpp
+
+commit f776454370e700c28831b42490d171c3bc559b96
+Author: Roman Chekrygin <88584860+Mimocake@users.noreply.github.com>
+Date:   Fri Mar 6 16:44:28 2026 +0300
+
+    Initial commit
+```
+## Part II
+
 
