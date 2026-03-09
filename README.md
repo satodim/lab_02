@@ -401,4 +401,270 @@ Date:   Fri Mar 6 16:44:28 2026 +0300
 ```
 ## Part II
 
+### Шаг 1
+
+*В локальной копии репозитория создайте локальную ветку `patch1`.*
+
+```sh
+git checkout -b patch1
+```
+
+### Внесите изменения в ветке `patch1` по исправлению кода и избавления от `using namespace std;`.
+
+Новый код:
+```cpp
+#include <iostream>
+
+int main() {
+	std::string name;
+	std::cin >> name;
+	std::cout << "Hello world from " << name << std::endl;
+	return 0;
+}
+```
+
+### **commit**, **push** локальную ветку в удалённый репозиторий.
+
+``` sh
+git commit -a -m "removed using namespace std"
+```
+
+```
+[patch1 5faa54d] removed using namespace std
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+```
+
+```sh
+git push origin patch1
+```
+
+```
+Username for 'https://github.com': satodim
+Password for 'https://satodim@github.com': 
+Enumerating objects: 42, done.
+Counting objects: 100% (42/42), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (35/35), done.
+Writing objects: 100% (42/42), 13.37 KiB | 1.21 MiB/s, done.
+Total 42 (delta 6), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (6/6), done.
+remote: 
+remote: Create a pull request for 'patch1' on GitHub by visiting:
+remote:      https://github.com/satodim/lab_02/pull/new/patch1
+remote: 
+To https://github.com/satodim/lab_02.git
+ * [new branch]      patch1 -> patch1
+```
+
+### Проверьте, что ветка `patch1` доступна в удалённом репозитории.
+
+```sh
+git log
+```
+
+```
+commit a6505f6297b26b72c249aec334f3d3726b6fc9ff (HEAD -> patch1, origin/patch1)
+Author: satodim <vovkakursk8@gmail.com>
+Date:   Mon Mar 9 13:31:25 2026 +0000
+
+    removed using namespace std
+
+commit b15398ae3b062c765a7264ad83a203a3e54179bc (origin/main, main)
+Author: satodim <vovkakursk8@gmail.com>
+Date:   Mon Mar 9 13:15:31 2026 +0000
+
+    added hello_world.cpp
+
+commit ea81e44f304637ee73a489d8f645a0ccc56dbb98
+Author: satodim <vovkakursk8@gmail.com>
+Date:   Mon Mar 9 12:56:10 2026 +0000
+
+    added sources
+
+commit 1e8920081b14e834d52505ea13c1a46218022eba
+Author: satodim <vovkakursk8@gmail.com>
+Date:   Mon Mar 9 15:47:47 2026 +0300
+
+    Create .gitignore
+```
+
+### Я сделал pull-request удаленно на гитхабе. В этом убедимся с помощью утилиты `gh`.
+```sh
+gh pr view --json number,title,author
+```
+вывод:
+```
+{
+  "author": {
+    "id": "U_kgDOCjA-pg",
+    "is_bot": false,
+    "login": "satodim",
+    "name": "satodim"
+  },
+  "number": 1,
+  "title": "removed using namespace std"
+}
+```
+
+### В локальной копии в ветке `patch1` добавьте в исходный код комментарии.
+
+```cpp
+// Подключаем библиотеку ввода-вывода
+#include <iostream>
+
+int main() {
+	// Создаем строку для имени
+	std::string name;
+	// Принимаем имя
+	std::cin >> name;
+	// Печатаем
+	std::cout << "Hello world from " << name << std::endl;
+	return 0;
+}
+```
+
+### commit, push
+
+```sh
+git commit -a -m "added comments"
+```
+
+```
+[patch1 e87a893] added comments
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+```
+
+```sh
+git push origin patch1
+```
+
+```
+Username for 'https://github.com': satodim
+Password for 'https://satodim@github.com': 
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 488 bytes | 488.00 KiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/satodim/lab_02.git
+   a6505f6..e87a893  patch1 -> patch1
+```
+
+### Проверьте, что новые изменения есть в созданном на шаге 5 pull-request
+
+```sh
+gh pr view --json number,title,author,commits
+```
+
+```
+{
+  "author": {
+    "id": "U_kgDOCjA-pg",
+    "is_bot": false,
+    "login": "satodim",
+    "name": "satodim"
+  },
+  "commits": [
+    {
+      "authoredDate": "2026-03-09T13:31:25Z",
+      "authors": [
+        {
+          "email": "vovkakursk8@gmail.com",
+          "id": "U_kgDOCjA-pg",
+          "login": "satodim",
+          "name": "satodim"
+        }
+      ],
+      "committedDate": "2026-03-09T13:31:25Z",
+      "messageBody": "",
+      "messageHeadline": "removed using namespace std",
+      "oid": "a6505f6297b26b72c249aec334f3d3726b6fc9ff"
+    },
+    {
+      "authoredDate": "2026-03-09T13:40:09Z",
+      "authors": [
+        {
+          "email": "vovkakursk8@gmail.com",
+          "id": "U_kgDOCjA-pg",
+          "login": "satodim",
+          "name": "satodim"
+        }
+      ],
+      "committedDate": "2026-03-09T13:40:09Z",
+      "messageBody": "",
+      "messageHeadline": "added comments",
+      "oid": "e87a8934f708958710a42ab3b99f07d94033dad6"
+    }
+  ],
+  "number": 1,
+  "title": "removed using namespace std"
+}
+```
+
+### В удалённый репозитории выполните слияние PR `patch1 -> master` и удалите ветку `patch1` в удаленном репозитории.
+
+Сделал это на гитхабе
+
+### Локально выполните **pull**.
+
+```sh
+git checkout main
+git pull origin main
+```
+
+```
+remote: Enumerating objects: 12, done.
+remote: Counting objects: 100% (11/11), done.
+remote: Compressing objects: 100% (8/8), done.
+remote: Total 8 (delta 4), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (8/8), 6.56 KiB | 2.19 MiB/s, done.
+From https://github.com/satodim/lab_02
+ * branch            main       -> FETCH_HEAD
+   b15398a..c56f553  main       -> origin/main
+Updating b15398a..c56f553
+Fast-forward
+ README.md       | 404 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ hello_world.cpp |  16 ++-
+ 2 files changed, 414 insertions(+), 6 deletions(-)
+```
+
+### С помощью команды `git log` просмотрите историю в локальной версии ветки **main**.
+
+```
+Merge: 95b1f20 e87a893
+Author: satodim <vovkakursk8@gmail.com>
+Date:   Mon Mar 9 16:42:19 2026 +0300
+
+    Merge pull request #1 from satodim/patch1
+    
+    removed using namespace std
+
+commit e87a8934f708958710a42ab3b99f07d94033dad6 (origin/patch1, patch1)
+Author: satodim <vovkakursk8@gmail.com>
+Date:   Mon Mar 9 13:40:09 2026 +0000
+
+    added comments
+
+commit 95b1f2004178644144245fbf06225d419b6ace96
+Author: satodim <vovkakursk8@gmail.com>
+Date:   Mon Mar 9 16:35:25 2026 +0300
+
+    README.md
+
+commit a6505f6297b26b72c249aec334f3d3726b6fc9ff
+Author: satodim <vovkakursk8@gmail.com>
+```
+
+### Удалите локальную ветку `patch1`.
+
+```sh
+git branch -d patch1
+```
+
+```
+Deleted branch patch1 (was e87a893).
+```
+## Part III
 
