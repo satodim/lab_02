@@ -668,3 +668,371 @@ Deleted branch patch1 (was e87a893).
 ```
 ## Part III
 
+### Создайте новую локальную ветку `patch2`.
+
+```sh
+git checkout -b patch2
+```
+
+### Измените code style с помощью утилиты `clang-format`. Например, используя опцию `-style=Mozilla`.
+
+```sh
+clang-format -style=Mozilla -i hello_world.cpp 
+```
+
+код:
+```cpp
+// Подключаем библиотеку ввода-вывода
+#include <iostream>
+
+int
+main()
+{
+  // Создаем строку для имени
+  std::string name;
+  // Принимаем имя
+  std::cin >> name;
+  // Печатаем
+  std::cout << "Hello world from " << name << std::endl;
+  return 0;
+}
+```
+
+### commit, push, создайте pull-request `patch2 -> master`
+
+```sh
+git commit -a -m "changed code style"
+```
+
+```
+[patch2 0c61fbe] changed code style
+ 1 file changed, 10 insertions(+), 8 deletions(-)
+```
+
+```sh
+git push origin patch2
+```
+
+```
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 399 bytes | 399.00 KiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+remote: 
+remote: Create a pull request for 'patch2' on GitHub by visiting:
+remote:      https://github.com/satodim/lab_02/pull/new/patch2
+remote: 
+To https://github.com/satodim/lab_02
+ * [new branch]      patch2 -> patch2
+```
+
+Также сделаем pull-request и, как и в прошлый раз, проверим его создание с помощью утилиты `gh`:
+
+```sh
+gh pr view --json number,title,author,commits
+```
+
+```
+{
+  "author": {
+    "id": "U_kgDOCjA-pg",
+    "is_bot": false,
+    "login": "satodim",
+    "name": "satodim"
+  },
+  "commits": [
+    {
+      "authoredDate": "2026-03-09T13:55:47Z",
+      "authors": [
+        {
+          "email": "vovkakursk8@gmail.com",
+          "id": "U_kgDOCjA-pg",
+          "login": "satodim",
+          "name": "satodim"
+        }
+      ],
+      "committedDate": "2026-03-09T13:55:47Z",
+      "messageBody": "",
+      "messageHeadline": "changed code style",
+      "oid": "f86f70b391d8b886cd99073695d57d6df6cae7a3"
+    }
+  ],
+  "number": 2,
+  "title": "changed code style"
+}
+```
+
+### В ветке `main` в удаленном репозитории измените комментарии, например, расставьте знаки препинания, переведите комментарии на другой язык.
+
+Переключимся на векту `main`
+
+```sh
+git checkout main
+```
+
+И переведем комментарии на английский:
+```cpp
+// including standard IO library
+#include <iostream>
+
+int main() {
+	// creating string for name
+	std::string name;
+	// recieving name
+	std::cin >> name;
+	// printing "hello world from name"
+	std::cout << "Hello world from " << name << std::endl;
+	return 0;
+}
+```
+
+Ну и по классике:
+
+```sh
+git commit -a -m "translated comments"
+```
+
+```
+[main a053462] translated comments
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+```
+
+```sh
+git push origin main
+```
+
+```
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 443 bytes | 443.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://github.com/satodim/lab_02
+   e122c12..a053462  main -> main
+```
+
+### Шаг 5
+
+Теперь переключимся на ветку `patch2`
+```sh
+git checkout patch2
+```
+
+И проверим наш pull-request, в этот раз посмотрим в том числе и на параметр `mergeable`
+```sh
+gh pr view --json number,title,author,commits,mergeable
+```
+
+```
+{
+  "author": {
+    "login": "satodim"
+  },
+  "commits": [
+    {
+      "authoredDate": "2026-03-07T16:31:41Z",
+      "authors": [
+        {
+          "email": "vovkakursk8@gmail.com",
+          "id": "U_kgDOCjA-pg",
+          "login": "satodim",
+          "name": "satodim"
+        }
+      ],
+      "committedDate": "2026-03-07T16:31:41Z",
+      "messageBody": "",
+      "messageHeadline": "changed code style",
+      "oid": "0c61fbe7eda89afec7299c556e6f3c4f32d4af45"
+    }
+  ],
+  "mergeable": "CONFLICTING",
+  "number": 2,
+  "title": "part 3"
+}
+```
+
+И как можно заметить, этот параметр равен `CONFLICTING`, то есть действительно присутствуют конфликты.
+
+### Для этого локально выполните `pull` + `rebase` (точную последовательность команд, следует узнать самостоятельно). Исправьте конфликты.
+
+Для начала на всякий случай подтянем ветку `main`, чтобы она была синхронизированна с удалённым репозиторием.
+
+```sh
+git checkout main
+git pull origin main
+```
+
+У меня оно и так уже было up-to-date, поэтому я получил следующий вывод:
+
+```
+From https://github.com/satodim/lab_02
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+```
+
+Дальше переключаемся на другую ветку и пытаемся ее перебазировать:
+
+```sh
+git checkout patch2
+git rebase main
+```
+
+На что гит выведет следующее сообщение:
+```
+Auto-merging hello_world.cpp
+CONFLICT (content): Merge conflict in hello_world.cpp
+error: could not apply 0c61fbe... changed code style
+hint: Resolve all conflicts manually, mark them as resolved with
+hint: "git add/rm <conflicted_files>", then run "git rebase --continue".
+hint: You can instead skip this commit: run "git rebase --skip".
+hint: To abort and get back to the state before "git rebase", run "git rebase --abort".
+Could not apply 0c61fbe... changed code style
+```
+
+А `hello_world.cpp` стал вот таким:
+
+```cpp
+// including standard IO library
+#include <iostream>
+
+<<<<<<< HEAD
+int main() {
+	// creating string for name
+	std::string name;
+	// recieving name
+	std::cin >> name;
+	// printing "hello world from name"
+	std::cout << "Hello world from " << name << std::endl;
+	return 0;
+=======
+int
+main()
+{
+  // Создаем строку для имени
+  std::string name;
+  // Принимаем имя
+  std::cin >> name;
+  // Печатаем
+  std::cout << "Hello world from " << name << std::endl;
+  return 0;
+>>>>>>> 0c61fbe (changed code style)
+}
+```
+
+Исправим конфликт, совместив английские комментарии с другим стилем кода:
+```sh
+// including standard IO library
+#include <iostream>
+
+int
+main()
+{
+  // creating string for name
+  std::string name;
+  // recieving name
+  std::cin >> name;
+  // printing "hello world from name"
+  std::cout << "Hello world from " << name << std::endl;
+  return 0;
+}
+```
+
+Теперь пометим этот файл как переделанный с помощью команды 
+```sh
+git add hello_world.cpp
+```
+
+И продолжим перебазирование:
+```sh
+git rebase --continue
+```
+
+Других конфликтов не возникло. Гит предложил ввести название этого перебазирования и потом вывел это:
+```
+[detached HEAD cceff5a] changed code style and translated comments
+ 1 file changed, 10 insertions(+), 8 deletions(-)
+Successfully rebased and updated refs/heads/patch2.
+```
+
+### Сделайте force push в ветку `patch2`
+
+```sh
+git push --force origin patch2
+```
+
+```
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 466 bytes | 466.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://github.com/satodim/lab_02
+ + 0c61fbe...cceff5a patch2 -> patch2 (forced update)
+```
+
+### Убедитесь, что в pull-request пропали конфликтны.
+
+Делаем это уже привычным для нас образом
+
+```sh
+gh pr view --json number,title,author,commits,mergeable
+```
+
+```
+{
+  "author": {
+    "login": "satodim"
+  },
+  "commits": [
+    {
+      "authoredDate": "2026-03-07T16:31:41Z",
+      "authors": [
+        {
+          "email": "vovkakursk8@gmail.com",
+          "id": "U_kgDOCjA-pg",
+          "login": "satodim",
+          "name": "satodim"
+        }
+      ],
+      "committedDate": "2026-03-07T18:10:13Z",
+      "messageBody": "",
+      "messageHeadline": "changed code style and translated comments",
+      "oid": "cceff5a8b18ac71a7e12a995b186f2048bc4ff5a"
+    }
+  ],
+  "mergeable": "MERGEABLE",
+  "number": 2,
+  "title": "part 3"
+}
+```
+
+Теперь переменная `mergeable` равна `MERGEABLE`.
+
+### Вмержите pull-request `patch2` -> `master`.
+
+Сделал это на гитхабе.
+
+Теперь можно посмотреть последние 2 коммита и убедиться, что слияние прошло успешно:
+```sh
+git checkout main
+git log -2
+```
+
+```
+commit a37547d1e626f4f6e41e9f77499c67655d1522b5 (HEAD -> main, origin/main)
+Merge: a053462 cceff5a
+Author: satodim <88584860+satodim@users.noreply.github.com>
+Date:   Sat Mar 9 21:27:39 2026 +0300
+
+    Merge pull request #2 from satodim/patch2
+    
+    part 3 step 9
+
+commit cceff5a8b18ac71a7e12a995b186f2048bc4ff5a (origin/patch2, patch2)
+Author: satodim <vovkakursk8@gmail.com>
+Date:   Sat Mar 9 19:31:41 2026 +0300
