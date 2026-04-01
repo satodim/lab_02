@@ -4,7 +4,7 @@
 
 ### Проинициализируем нужные для работы переменные, перейдем в рабочее пространство и активируем ранее подготовленные скрипты.
 ```sh
-export GITHUB_USERNAME=Mimocake
+export GITHUB_USERNAME=satodim
 export GITHUB_EMAIL=<адрес_почтового_ящика>
 export GITHUB_TOKEN=<сгенирированный_токен>
 alias edit=nano
@@ -29,7 +29,7 @@ git config --global hub.protocol https
 
 Создаём папку для второй лабы и переходим туда
 ```sh
-mkdir projects/lab02t && cd projects/lab02t
+mkdir projects/lab_02 && cd projects/lab_02
 ```
 Создаем новый репозиторий
 ```sh
